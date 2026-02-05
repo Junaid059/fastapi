@@ -1,4 +1,4 @@
-import datetime
+
 from .database import Base
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Boolean, func
 from sqlalchemy.orm import relationship
@@ -21,8 +21,8 @@ class User(Base):
     id = Column(Integer,primary_key=True,nullable=False,autoincrement=True)
     email = Column(String,nullable=False,unique=True)
     password = Column(String,nullable=False)
-    created_at = Column(DateTime(timezone=True),server_default=func.now()
-)
+    role= Column(String,nullable = False,server_default = "user")
+    created_at = Column(DateTime(timezone=True),server_default=func.now())
     
 
 class Votes(Base):
@@ -30,3 +30,18 @@ class Votes(Base):
 
     user_id = Column(Integer,ForeignKey("Users.id",ondelete="CASCADE"),primary_key=True)
     post_id = Column(Integer,ForeignKey("Posts.id",ondelete="CASCADE"),primary_key=True)    
+
+
+class Comment(Base):
+    __tablename__ = "Comments"
+
+    id = Column(Integer,primary_key= True,nullable=False,autoincrement=True)
+    content = Column(String,nullable = False)
+    post_id = Column(Integer,ForeignKey("Posts.id",ondelete="CASCADE"),nullable=False)
+    user_id = Column(Integer,ForeignKey("Users.id",ondelete="CASCADE"),nullable=False)
+    created_at = Column(DateTime(timezone=True),server_default=func.now())
+
+    user = relationship("User", lazy="joined", innerjoin=True)
+    post = relationship("Post", lazy="joined", innerjoin=True)
+
+

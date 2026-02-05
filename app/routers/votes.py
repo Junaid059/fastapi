@@ -1,17 +1,20 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from ..routers import votes
 from sqlalchemy.orm import Session
 from .. import models, schemas
 from ..database import get_db
-import Oauth
+from . import Oauth
 
 router = APIRouter()
 
 @router.post("/newVotes",status_code=status.HTTP_201_CREATED)
-def Vote(vote: schemas.Vote,db: Session = Depends(get_db),current_user: models.User = Depends(votes.Oauth.get_current_user)):
+def Vote(vote: schemas.Vote, db: Session = Depends(get_db), current_user: models.User = Depends(Oauth.get_current_user)):
+
+  post = db.query(models.Post).filter(models.Post.id == vote.post_id).first()
   
+  if not post:
+      raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"Post with id {vote.post_id} does not exist")
   found_vote = db.query(models.Votes).filter(models.Votes.post_id == vote.post_id, models.Votes.user_id == current_user.id).first()
-  if vote.dir ==1:
+  if vote.dir == 1:
     if found_vote:
            raise HTTPException(status_code=status.HTTP_409_CONFLICT,detail=f"user {current_user.id} has already voted on post {vote.post_id}")
        

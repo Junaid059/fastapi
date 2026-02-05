@@ -16,6 +16,7 @@ class PostResponse(PostBase):
 class UserOut(BaseModel):
     id: int
     email: EmailStr 
+    role: str
     
     class Config:
         from_attributes = True 
@@ -43,6 +44,7 @@ class Token(BaseModel):
     
 class TokenData(BaseModel):
     id: int | None = None
+    role: str | None = None
 
 
     class Config:
@@ -50,8 +52,27 @@ class TokenData(BaseModel):
 
 class Vote(BaseModel):
     post_id:int
-    user_id:int
     dir: Annotated[int, Field(le=1)]
 
+    class config:
+        from_attributes = True
+
+
+class CommentBase(BaseModel):
+    id:int
+    content:str
+    post_id:int
+    user_id: int
+    created_at: datetime.datetime
+
+class CommentCreate(CommentBase):
+    pass 
+
+class CommentOut(CommentBase):
+    id: int
+    user_id:int 
+
+    class Config:
+        from_attributes = True
 
 
