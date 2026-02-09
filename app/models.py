@@ -1,6 +1,6 @@
 
 from .database import Base
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Boolean, func
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Boolean, func, UniqueConstraint
 from sqlalchemy.orm import relationship
 
 
@@ -45,3 +45,10 @@ class Comment(Base):
     post = relationship("Post", lazy="joined", innerjoin=True)
 
 
+class Follow(Base):
+    __tablename__ = "Follows"
+
+    id = Column(Integer, primary_key = True, nullable = False, autoincrement = True)
+    follower_id = Column(Integer, ForeignKey("Users.id", ondelete="CASCADE"), nullable = False)
+    following_id = Column(Integer, ForeignKey("Users.id", ondelete="CASCADE"), nullable = False)
+    __table_args = (UniqueConstraint("follower_id","following_id", name="unique_follow"),)

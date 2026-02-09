@@ -59,11 +59,8 @@ class Vote(BaseModel):
 
 
 class CommentBase(BaseModel):
-    id:int
     content:str
     post_id:int
-    user_id: int
-    created_at: datetime.datetime
 
 class CommentCreate(CommentBase):
     pass 
@@ -71,8 +68,19 @@ class CommentCreate(CommentBase):
 class CommentOut(CommentBase):
     id: int
     user_id:int 
+    created_at: datetime.datetime
 
     class Config:
         from_attributes = True
 
 
+class FollowBase(BaseModel):
+    following_id: int
+
+class FollowOut(BaseModel):
+    id: int
+    follower_id: int
+    following_id: int
+
+    class Config:
+        from_attributes = True

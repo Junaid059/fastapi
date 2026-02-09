@@ -16,7 +16,6 @@ Base = declarative_base()
 
 
 try:
-    # this will actually try to connect
     with engine.connect() as conn:
         print("Database connection successful (SQLAlchemy)")
 except SQLAlchemyError as e:
