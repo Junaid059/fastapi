@@ -21,7 +21,7 @@ def followUser(user_id: int, db: Session = Depends(get_db), current_user = Depen
     db.add(new_follow)
     db.commit()
     db.refresh(new_follow)
-    return new_follow
+    return new_follow 
 
 @router.delete("/unfollow/{user_id}", status_code=status.HTTP_202_ACCEPTED, response_model=schemas.FollowOut)
 def unfollowUser(user_id: int, db: Session = Depends(get_db), current_user = Depends(get_current_user)):
