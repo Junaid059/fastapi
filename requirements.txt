@@ -5,3 +5,4 @@ SQLAlchemy
 passlib[bcrypt]
 python-jose[cryptography]
 python-dotenv
+websockets

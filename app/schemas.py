@@ -86,4 +86,20 @@ class FollowOut(BaseModel):
         from_attributes = True
 
 
-        
+class MessageBase(BaseModel):
+    content: str
+    receiver_id: int
+
+class MessageCreate(MessageBase):
+    pass
+
+class MessageOut(BaseModel):
+    id: int
+    sender_id: int
+    receiver_id: int
+    content: str
+    created_at: datetime.datetime
+    is_read: bool
+
+    class Config:
+        from_attributes = True

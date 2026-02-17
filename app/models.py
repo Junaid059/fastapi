@@ -52,3 +52,17 @@ class Follow(Base):
     follower_id = Column(Integer, ForeignKey("Users.id", ondelete="CASCADE"), nullable = False)
     following_id = Column(Integer, ForeignKey("Users.id", ondelete="CASCADE"), nullable = False)
     __table_args = (UniqueConstraint("follower_id","following_id", name="unique_follow"),)
+
+
+class Message(Base):
+    __tablename__ = "Messages"
+
+    id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
+    sender_id = Column(Integer, ForeignKey("Users.id", ondelete="CASCADE"), nullable=False)
+    receiver_id = Column(Integer, ForeignKey("Users.id", ondelete="CASCADE"), nullable=False)
+    content = Column(String, nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    is_read = Column(Boolean, server_default='FALSE', nullable=False)
+
+    sender = relationship("User", foreign_keys=[sender_id], lazy="joined")
+    receiver = relationship("User", foreign_keys=[receiver_id], lazy="joined")

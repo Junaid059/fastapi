@@ -2,7 +2,7 @@ from dbm import error
 from fastapi import FastAPI
 import psycopg2
 from psycopg2.extras import RealDictCursor
-from .routers import posts, users, auth, votes,comments,follow,feed
+from .routers import posts, users, auth, votes, comments, follow, feed, search, chat
 from . import models
 from .database import engine
 
@@ -18,3 +18,5 @@ app.include_router(votes.router)
 app.include_router(comments.router)
 app.include_router(follow.router)
 app.include_router(feed.router)
+app.include_router(search.router)
+app.include_router(chat.router)
